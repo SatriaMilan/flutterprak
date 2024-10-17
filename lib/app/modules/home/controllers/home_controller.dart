@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:myapp/app/routes/app_pages.dart';
 
 class HomeController extends GetxController {
   //TODO: Implement HomeController
@@ -18,6 +19,8 @@ class HomeController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
-  void increment() => count.value++;
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:2872239552.
+  Future<void> moveToResep() async {
+  Get.toNamed(Routes.RESEP);
+}
 }

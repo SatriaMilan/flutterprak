@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io'; 
+import 'package:myapp/app/routes/app_pages.dart';
+import 'dart:io';
 import '../controllers/home_controller.dart';
-
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -12,7 +12,7 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white, 
+        backgroundColor: Colors.white,
         centerTitle: false,
         title: const Row(
           children: [
@@ -48,14 +48,13 @@ class HomeView extends GetView<HomeController> {
         ),
         actions: const [
           AvatarWidget(
-            imageUrl: 'public/images/keranjang.png', 
+            imageUrl: 'public/images/keranjang.png',
             isLeft: false,
             backgroundColor: Color(0xFF181C2E),
           ),
         ],
       ),
-
-      backgroundColor: Colors.white, 
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -81,6 +80,10 @@ class HomeView extends GetView<HomeController> {
             const Text('All Categories', style: TextStyle(fontSize: 20)),
             const SizedBox(height: 10),
             _buildCategoryList(),
+            const SizedBox(height: 20),
+            const Text('Recipe for today', style: TextStyle(fontSize: 20)),
+            const SizedBox(height: 10),
+            _buildRecipeGridList(),
             const SizedBox(height: 20),
             const Text('Open Restaurants', style: TextStyle(fontSize: 20)),
             const SizedBox(height: 10),
@@ -124,21 +127,21 @@ class HomeView extends GetView<HomeController> {
         children: [
           CategoryCard(
             label: 'Gudeg',
-            imageUrl: 'public/images/gudeg.jpg', 
+            imageUrl: 'public/images/gudeg.jpg',
             onTap: () {
               print('Gudeg button tapped');
             },
           ),
           CategoryCard(
             label: 'Hot Dog',
-            imageUrl: 'public/images/hotdog.jpg', 
+            imageUrl: 'public/images/hotdog.jpg',
             onTap: () {
               print('Hot Dog button tapped');
             },
           ),
           CategoryCard(
             label: 'Burger',
-            imageUrl: 'public/images/burger.jpg', 
+            imageUrl: 'public/images/burger.jpg',
             onTap: () {
               print('Burger button tapped');
             },
@@ -148,6 +151,42 @@ class HomeView extends GetView<HomeController> {
             imageUrl: 'public/images/pizza.png',
             onTap: () {
               print('Pizza button tapped');
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRecipeGridList() {
+    return SizedBox(
+      height: 50,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          CategoryCard(
+            label: 'breakfast',
+            imageUrl: 'public/images/sarapn.jpg',
+            onTap: () {
+              controller.moveToResep();
+              Get.toNamed(Routes.RESEP);
+              print('Gudeg button tapped');
+            },
+          ),
+          CategoryCard(
+            label: 'have lunch',
+            imageUrl: 'public/images/havelunch.png',
+            onTap: () {
+              controller.moveToResep();
+              print('Hot Dog button tapped');
+            },
+          ),
+          CategoryCard(
+            label: 'dinner',
+            imageUrl: 'public/images/dinner.jpg',
+            onTap: () {
+              controller.moveToResep();
+              print('Burger button tapped');
             },
           ),
         ],
@@ -167,19 +206,19 @@ class HomeView extends GetView<HomeController> {
         ),
         RestaurantCard(
           name: 'Restaurant 2',
-          imageUrl: 'public/images/rest2.jpg', 
+          imageUrl: 'public/images/rest2.jpg',
         ),
         RestaurantCard(
           name: 'Restaurant 3',
-          imageUrl: 'public/images/rest3.jpg', 
+          imageUrl: 'public/images/rest3.jpg',
         ),
         RestaurantCard(
           name: 'Restaurant 4',
-          imageUrl: 'public/images/rest4.png', 
+          imageUrl: 'public/images/rest4.png',
         ),
         RestaurantCard(
           name: 'Restaurant 5',
-          imageUrl: 'public/images/rest5.jpg', 
+          imageUrl: 'public/images/rest5.jpg',
         ),
       ],
     );
@@ -207,8 +246,7 @@ class AvatarWidget extends StatelessWidget {
       ),
       child: CircleAvatar(
         backgroundColor: backgroundColor,
-        backgroundImage:
-            AssetImage(imageUrl), 
+        backgroundImage: AssetImage(imageUrl),
         radius: 20.0,
       ),
     );
@@ -251,8 +289,7 @@ class CategoryCard extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundImage:
-                  AssetImage(imageUrl), 
+              backgroundImage: AssetImage(imageUrl),
               radius: 20.0,
             ),
             const SizedBox(width: 10),
@@ -284,7 +321,7 @@ class RestaurantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 100,
-      height: 20, 
+      height: 20,
       child: Card(
         color: const Color.fromARGB(255, 255, 255, 255),
         elevation: 4,
@@ -296,8 +333,8 @@ class RestaurantCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.asset(
-                imageUrl, 
-                height: 120, 
+                imageUrl,
+                height: 120,
                 width: 327,
                 fit: BoxFit.cover,
               ),
@@ -307,8 +344,7 @@ class RestaurantCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 1.0),
               child: Text(
                 name,
-                style: const TextStyle(
-                    fontSize: 18), 
+                style: const TextStyle(fontSize: 18),
               ),
             ),
           ],
@@ -324,32 +360,32 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  String? _selectedCategory; 
-  File? _image; 
-  final ImagePicker _picker = ImagePicker(); 
+  String? _selectedCategory;
+  File? _image;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, 
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
           'Search',
           style: TextStyle(
-            color: Colors.black, 
+            color: Colors.black,
           ),
         ),
-        backgroundColor: Colors.white, 
+        backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.black),
         actions: const [
           AvatarWidget(
-            imageUrl: 'public/images/keranjang.png', 
+            imageUrl: 'public/images/keranjang.png',
             isLeft: false,
             backgroundColor: Color(0xFF181C2E),
           ),
           SizedBox(width: 10),
         ],
-        elevation: 0, 
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -385,13 +421,13 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 10), 
+                const SizedBox(width: 10),
                 GestureDetector(
-                  onTap: _pickImage, 
+                  onTap: _pickImage,
                   child: AvatarWidget(
                     imageUrl: _image != null
-                        ? _image!.path 
-                        : 'public/images/camera.jpeg', 
+                        ? _image!.path
+                        : 'public/images/camera.jpeg',
                     isLeft: false,
                     backgroundColor: Color(0xFF181C2E),
                   ),
@@ -400,7 +436,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
             const SizedBox(height: 20),
             _buildCategoryList(),
-            const SizedBox(height: 20), 
+            const SizedBox(height: 20),
 
             // Conditionally display the restaurant grid based on the selected category
             if (_selectedCategory != null) _buildRestaurantGrid(),
@@ -412,7 +448,7 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<void> _pickImage() async {
     try {
-final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+      final pickedFile = await _picker.pickImage(source: ImageSource.camera);
       if (pickedFile != null) {
         setState(() {
           _image = File(pickedFile.path); // Update the selected image
@@ -478,11 +514,13 @@ final pickedFile = await _picker.pickImage(source: ImageSource.camera);
 
   Widget _buildRestaurantGrid() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.6, // Set a fixed height for the grid
+      height: MediaQuery.of(context).size.height *
+          0.6, // Set a fixed height for the grid
       child: GridView.count(
         crossAxisCount: 2,
         shrinkWrap: true,
-        physics: const AlwaysScrollableScrollPhysics(), // Enable vertical scrolling
+        physics:
+            const AlwaysScrollableScrollPhysics(), // Enable vertical scrolling
         children: const [
           RestaurantCard(
             name: 'Burger 1',
